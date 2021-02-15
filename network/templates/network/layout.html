@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'flags/sprite.css' %}">
+
+
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Social Media</a>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+              <div>
+                <ul class="navbar-nav mr-auto">
+                  
+                  
+                  {% if user.is_authenticated %}
+                  <li class="nav-item"> 
+                    <a class="nav-link" href="{% url 'world' %}">
+                      Around the World
+                      <img class="navbar-brand" style="width:1.5vw" src="{% static 'site_images/world.jpg' %}">
+                    </a>
+                  </li>
+                  
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'following' %}">Following</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                      </li>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'register' %}">Register</a>
+                      </li>
+                  {% endif %}
+                </ul>
+              </div>
+              <div class="navbar-nav">
+                  {% if user.is_authenticated %}
+                      <a class="nav-item nav-link" href="{% url 'profile' user.username %}"><img style="width:4vw; height:7vh;" class="rounded-circle account-img" class="nav-link" src="{{user.user_image.url}}"></a>              
+                  {% endif %}
+              </div>
+          </div>
+            
+          </nav>
+        
+        <div class="body">
+
+            <!-- Even if you know there is only one message, you should still iterate over the messages sequence, 
+                because otherwise the message storage will not be cleared for the next request. -->
+                {% if messages %}
+                  {% for message in messages %}
+                    <!-- The reason for using the value of the message.tags as part of the bootstrap class is
+                    because the bootstrap "alert-..." class perfectly aligns with the message.tags value.  -->
+                    <div class="alert alert-{{ message.tags }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+
+                <div class="container">
+                  
+                  {% block body %}
+                    
+                  {% endblock %}
+
+                  {% block script %}
+                          <script src="{% static 'network/index.js' %}"></script>
+                  {% endblock script %}
+                </div>               
+
+        </div>
+
+
+
+    </body>
+</html>

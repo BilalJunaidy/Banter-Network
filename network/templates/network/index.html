@@ -1,0 +1,53 @@
+{% extends "network/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<br>
+        <div id = "SuccessMessageAlert"  class="alert alert-success">Post Succesfully Posted</div>
+
+        <div>
+            <a class="btn btn-primary" id="ShowPostCreateForm">Make a new Post</a>
+        </div>
+
+
+
+        <form id="PostCreateForm">
+            {% csrf_token %}
+
+            <fieldset class="form-group">
+                <legend class="border-bottom-mb-4">
+                    Create Post
+                </legend>
+                {{form | crispy}}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Add Post!</button>       
+            </div>
+        </form>
+
+        <div id="posts" class="container">
+
+        </div>
+{% endif %}
+
+{% for user in users %}
+<article class="media content-section">
+    <div class="media-body">
+    <div class="article-metadata">
+        <img class="post_owner_flag_img" src="{{ user.country.flag }}">
+        <small class="text-muted">{{ user.country.name}}</small>
+        <a class="mr-2" href=>{{ user.username }}</a>
+        <small class="text-muted">{{ user.email}}</small>
+    </div>
+    <p class="article-content">{{ user.bio }}</p>
+    <a style = "background-color: #add8f0;" class="btn btn-success like_unlike_btn">Unfollow</a>
+    </div>
+    <br>
+</article>
+
+{% endfor %}
+
+
+{% endblock %}
+
