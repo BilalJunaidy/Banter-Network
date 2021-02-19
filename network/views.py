@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import *
 from django.contrib import messages
 import json
 from django.views.generic import (
@@ -19,7 +18,9 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin)
 
 from django.contrib.auth.decorators import login_required
-from .models import User, Follow
+from .models import *
+from .forms import *
+import os 
 
 
 # The following is the function based view which doesn't rely on AJAX calls and therefore, will not be used.
@@ -45,12 +46,21 @@ from .models import User, Follow
 
 def index(request):
     if request.user.is_authenticated:
-        Posts = Post.objects.all()
+        commentcreateform = CommentCreateForm()
         Form = PostCreateForm(request.POST or None)
-        users = User.objects.all()
+        # Follow_Objects = Follow.objects.filter(follower_id = request.user.id)
+        # Followed_Users = Follow_Objects.values_list('followed_id', flat=True)
+        # post_queryset = Post.objects.none()
+        # for user_id in Followed_Users:
+        #     user_post = Post.objects.filter(owner_id = user_id)
+        #     post_queryset.union(user_post, all=True)
+        post_queryset = Post.objects.all().order_by("-created_at")
+        comments = Comment.objects.all()
         return render(request, "network/index.html", {
             "form": Form,
-            "users": users,
+            "commentcreateform": commentcreateform,
+            'comments': comments,
+            "posts": post_queryset,
             })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -59,11 +69,10 @@ def index(request):
 # The following is a class based ListView 
 class PostListView(LoginRequiredMixin, ListView):
 
-    model = Post 
+    model = User 
     template_name = 'network/world.html' #<app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-created_at']
-    # paginate_by = 10
+    context_object_name = 'users'
+    ordering = ['-date_joined']
 
 
 
@@ -72,39 +81,20 @@ def save_post(request):
         return JsonResponse({"error": "POST request required."}, status=400)
     else:
         data = json.loads(request.body)
-        
+       
         Post.objects.create(
             content = data.get("content"),
             owner = request.user,
             privacy_setting = data.get("privacy_setting"),
-            post_image = data.get("post_image")
+            post_image = os.path.join("Post_Images/", data.get("post_image").split('\\')[-1])
         )
         return JsonResponse({"message": "Email sent successfully."}, status=201)
     
+############
 @login_required
 def Profile(request, username):
-    if request.method == 'PUT':
-        data = json.loads(request.body)
-        request.user.first_name = data.get("first_name")
-        request.user.last_name = data.get("last_name")
-        request.user.bio = data.get("bio")
-        request.user.country = data.get("country")
-
-        if not data.get("user_image") == "":
-            request.user.user_image = data.get("user_image")
-
-        request.user.save()
-
-        return JsonResponse({
-            "message": "User Profile Updated.",
-            "user_bio": request.user.bio,
-            'user_country_name': request.user.country.name,
-            'user_country_flag': request.user.country.flag,
-            'user_image_url': request.user.user_image.url,
-            }, status=201)
-
-        
-    elif request.method == 'GET':
+      
+    if request.method == 'GET':
         profile_user = User.objects.get(username = username)
         Form = UserUpdateForm(instance = profile_user)
         posts = Post.objects.filter(owner_id = profile_user.id).order_by("-created_at")
@@ -117,9 +107,9 @@ def Profile(request, username):
             btn_inner_text = "Unfollow"
         else:
             btn_inner_text = "Follow"
-            
 
-
+        comments = Comment.objects.all()
+        commentcreateform = CommentCreateForm()
 
         context = {
             "posts": posts, 
@@ -128,11 +118,39 @@ def Profile(request, username):
             'followers': followers,
             'following': following,
             'btn_inner_text': btn_inner_text,
+            "commentcreateform": commentcreateform,
+            'comments': comments,
         }
         return render(request, "network/profile.html", context)
     
     else:
-        return JsonResponse({"error": "POST request is not allowed."}, status=400)
+        return JsonResponse({"error": "Only GET request is allowed."}, status=400)
+
+
+def UpdateProfile(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        request.user.first_name = data.get("first_name")
+        request.user.last_name = data.get("last_name")
+        request.user.bio = data.get("bio")
+        request.user.country = data.get("country")
+
+        if not data.get("user_image") == "":
+            request.user.user_image = os.path.join("User_Images/", data.get("user_image").split('\\')[-1])
+
+        request.user.save()
+
+        return JsonResponse({
+            "message": "User Profile Updated.",
+            "user_bio": request.user.bio,
+            'user_country_name': request.user.country.name,
+            'user_country_flag': request.user.country.flag,
+            'user_image_url': request.user.user_image.url,
+            }, status=201)
+
+    else:
+        return JsonResponse({"error": "Only PUT request is allowed."}, status=400)
+
 
 
 def UpdateLikes(request):
@@ -167,13 +185,16 @@ def EditPost(request):
             return JsonResponse({"error": "Unauthorized access."}, status=400)
         else: 
             post.content = data.get("content")
-            post.post_image = data.get('post_image')
+
+            if data.get("post_image") != "":
+                post.post_image = os.path.join("Post_Images/", data.get("post_image").split('\\')[-1])
+           
             post.save()
             return JsonResponse(
                 {
                     "message": "Post updated successfully.",
                     "content": f"{post.content}",
-                    'post_image': f"{post.post_image}"
+                    'post_image': f"{post.post_image.url}"
                     }, status=201)
     
 
@@ -203,15 +224,34 @@ def CreateFollowers(request):
         status = 201)
 
 
-def following(request):
-    if request.method != 'GET':
-        return JsonResponse({"error": "Only GET request is allowed."}, status=400)
+# def following(request):
+#     if request.method != 'GET':
+#         return JsonResponse({"error": "Only GET request is allowed."}, status=400)
+#     else:
+#         current_user = request.user 
+#         followers = User.objects.filter(following = current_user)
+#         return render(request, "network/following.html", {
+#             "followers": followers
+#         })
+
+def CreateComment(request):
+    if request.method != 'PUT':
+        return JsonResponse({"error": "Only PUT request is allowed."}, status=400)
     else:
-        current_user = request.user 
-        followers = User.objects.filter(following = current_user)
-        return render(request, "network/following.html", {
-            "followers": followers
-        })
+        data = json.loads(request.body)
+        print(data)
+        comment = Comment()
+
+        comment.owner = request.user
+        comment.post_id = data.get("post_id")
+        comment.content = data.get("content")
+        comment.save()        
+        return JsonResponse({
+            "message": "Comment created successfully.",
+            "comment_content":comment.content,
+            'comment_owner': comment.owner.username, 
+            "comment_created_at": comment.created_at,
+            }, status=201)
 
 
 def login_view(request):

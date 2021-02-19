@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 
 class User(AbstractUser): 
     user_image = models.ImageField(default = 'User_Images/default.png', upload_to = 'User_Images', null = True, blank = False)
-    bio = models.TextField(max_length = 140, null=True, blank=True)
+    bio = models.TextField(max_length = 280, null=True, blank=True)
     country = CountryField(blank_label='(select country)')
     # following = models.ManyToManyField('Follow', through = 'Follow', blank=True)
 
@@ -38,6 +38,13 @@ class Post(models.Model):
     def total_likes(self):
         total = self.likes.count()
         return total 
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete = models.CASCADE)
+    owner = models.ForeignKey('User', on_delete = models.CASCADE)
+    content = models.CharField(_("Comment"), max_length = 140, blank = False, null = False)
+    created_at = models.DateTimeField(auto_now_add = True, blank=True)
+
 
 
     

@@ -29,25 +29,77 @@
         <div id="posts" class="container">
 
         </div>
+        <br>
 {% endif %}
 
-{% for user in users %}
-<article class="media content-section">
-    <div class="media-body">
-    <div class="article-metadata">
-        <img class="post_owner_flag_img" src="{{ user.country.flag }}">
-        <small class="text-muted">{{ user.country.name}}</small>
-        <a class="mr-2" href=>{{ user.username }}</a>
-        <small class="text-muted">{{ user.email}}</small>
-    </div>
-    <p class="article-content">{{ user.bio }}</p>
-    <a style = "background-color: #add8f0;" class="btn btn-success like_unlike_btn">Unfollow</a>
-    </div>
-    <br>
-</article>
+{% for post in posts %}
+    <article class="media content-section">
+        <div class="media-body">
+        <div class="article-metadata">
+                <img class="{{ post.owner.country.flag_css }}" src="{{ post.owner.country.flag }}">
+                <small class="text-muted">{{ post.owner.country.name}}</small>
+                <a class="mr-2" href="{% url 'profile' post.owner.username %}"><h5>{{ post.owner.username }}</h5></a>
+                            
+                
+            <small class="text-muted">{{ post.created_at|date:"F d, Y"}}</small>
+            {% if request.user == post.owner %}
+            <a data-post_id = "{{ post.id }}" class="btn btn-outline-info edit_post_btn">Edit</a>
+            {% endif %}
+        </div>
+        {% if post.post_image.url != "" %}
+            <img id="{{post.id}}_post_image" src="{{post.post_image.url}}">
+        {% endif %}
+        <hr>
+        <h5 id = {{post.id}}_content class="article-content">{{ post.content }}</h5>
+        <a data-post_id = "{{ post.id }}" class="btn btn-outline-info like_unlike_btn">Like</a>
+        <p id = "{{post.id}}_likes" class="article-content">{{ post.total_likes }} likes</p>
+        </div>
+    </article>    
 
+    <!-- Post Edit form -->
+    <form id={{post.id}}_edit_form>
+    </form>
+
+    <!-- List of comments to be displayed here  -->
+    
+    <article class="media content-section">
+        <!-- <div>
+            <h4>Comments</h4>
+        </div> -->
+
+        <div class="media-body" id = "{{post.id}}_comments">
+
+            {% for comment in comments %}
+            {% if comment.post_id == post.id %}
+            <div class="article-metadata">
+                <small class='text-muted'>On {{comment.created_at}}, <a class="mr-2">{{comment.owner}}</a>commented:</small>
+            </div>
+
+            <p>{{comment.content}}</p>
+            {% endif %}
+            {% endfor %}
+    
+        </div>
+
+    </article>
+
+    
+
+
+
+    <!-- Comment Create Form -->
+    <form data-post_id = "{{ post.id }}" class="commentcreateform" id={{post.id}}_comment_create_form>
+        {% csrf_token %}
+        {{commentcreateform | crispy}}
+    </form>
+    <hr>
+    <hr>
+    <br>
 {% endfor %}
 
 
+
 {% endblock %}
+
+
 

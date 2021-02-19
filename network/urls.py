@@ -10,12 +10,13 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("world", views.PostListView.as_view(), name="world"),
     path("profile/<str:username>", views.Profile, name="profile"),
-    path('following', views.following, name="following"),
+    # path('following', views.following, name="following"),
 
     # The following are API views
     path("api/save_post", views.save_post, name="save_post"),
-    path("api/updateprofile", views.Profile, name = "updateprofile"),
+    path("api/updateprofile", views.UpdateProfile, name = "updateprofile"),
     path("api/updatelikes", views.UpdateLikes, name = "updatelikes"),
     path('api/editpost', views.EditPost, name='editpost'),
     path('api/editfollow', views.CreateFollowers, name="editfollow"),
+    path('api/createcomment', views.CreateComment, name="createcomment")
 ]

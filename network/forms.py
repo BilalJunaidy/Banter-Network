@@ -23,6 +23,15 @@ class UserUpdateForm(ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'bio','country', 'user_image']
         widgets = {'country': CountrySelectWidget()}
+
+
+class CommentCreateForm(ModelForm):
+    content = forms.CharField(max_length = 140, widget = forms.TextInput(attrs = {
+        'placeholder': 'Comment....', 
+    }))
+    class Meta:
+        model = Comment
+        fields = ['content']
         
     
 
