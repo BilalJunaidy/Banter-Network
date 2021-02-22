@@ -2,7 +2,8 @@
 
 
 #### Image:
-![Thumbnail1](https://user-images.githubusercontent.com/61527086/108662451-2d8b2980-74f0-11eb-932b-49dababd2284.PNG)
+![Thumbnail1_50](https://user-images.githubusercontent.com/61527086/108662634-9377b100-74f0-11eb-8c62-3fd9a257efa3.png)
+
 
 ##### Video Demo:
 Watch the video demo of the application using the link below:
