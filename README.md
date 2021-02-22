@@ -28,5 +28,6 @@ https://youtu.be/W0HTFsjB2mA
 
 #### Image:
 
-![GitHub Logo](C:\Users\bilal\Desktop\Network\Thumbnail1.png)
-Format: ![Alt Text](C:\Users\bilal\Desktop\Network\Thumbnail1.png)    
+![Alt Text](C:\Users\bilal\Desktop\Network\Thumbnail1.png, 'Banter Network')
+![image](C:\Users\bilal\Desktop\Network\Thumbnail1.png, 'Banter Network')
+
