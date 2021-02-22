@@ -1,7 +1,5 @@
 # Banter Network
 
-
-#### Image:
 ![Thumbnail1_50](https://user-images.githubusercontent.com/61527086/108662634-9377b100-74f0-11eb-8c62-3fd9a257efa3.png)
 
 
