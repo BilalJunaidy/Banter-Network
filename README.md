@@ -29,4 +29,4 @@ https://youtu.be/W0HTFsjB2mA
 #### Image:
 
 ![GitHub Logo](C:\Users\bilal\Desktop\Network\Thumbnail1.png)
-Format: ![Alt Text](url)
+Format: ![Alt Text](C:\Users\bilal\Desktop\Network\Thumbnail1.png)    
