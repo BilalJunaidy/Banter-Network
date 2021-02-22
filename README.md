@@ -24,3 +24,7 @@ https://youtu.be/W0HTFsjB2mA
     e. Like either your own or other User's posts - performed through AJAX calls
     f. Comment on either your own or other User's post - performed through AJAX calls
     g. Follow or Unfollow Users - performed through AJAX calls
+ 
+
+#### Image:
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
