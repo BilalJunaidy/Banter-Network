@@ -31,5 +31,8 @@ https://youtu.be/W0HTFsjB2mA
 ![Alt Text](C:\Users\bilal\Desktop\Network\Thumbnail1.png, 'Banter Network')
 ![image](C:\Users\bilal\Desktop\Network\Thumbnail1.png, 'Banter Network')
 ![image](/media/site_images/stadium6.jpg, 'Banter Network')
+![image](https://github.com/BilalJunaidy/Banter-Network/tree/main/media/site_images/stadium6.jpg, 'Banter Network')
+![image](https://github.com/BilalJunaidy/Banter-Network/media/site_images/stadium6.jpg, 'Banter Network')
+
 
 
