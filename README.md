@@ -20,5 +20,3 @@ Backend REST API for the future maxscholars.org website.
     python manage.py migrate
     python manage.py runserver
     ```
-
-   ``` 
