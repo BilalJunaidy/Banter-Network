@@ -17,7 +17,6 @@ https://youtu.be/W0HTFsjB2mA
     python manage.py runserver
     ```
 ##### Features:
-    ```
     a. Create user, login and logout users
     b. Update User profile by editing the User's name, country, bio, image etc - Performed through AJAX
     c. Create posts by adding image and caption - performed through AJAX calls
@@ -25,4 +24,3 @@ https://youtu.be/W0HTFsjB2mA
     e. Like either your own or other User's posts - performed through AJAX calls
     f. Comment on either your own or other User's post - performed through AJAX calls
     g. Follow or Unfollow Users - performed through AJAX calls
-    ```
