@@ -1,6 +1,9 @@
 # Banter Network
 
 
+#### Image:
+![Thumbnail1](https://user-images.githubusercontent.com/61527086/108662451-2d8b2980-74f0-11eb-932b-49dababd2284.PNG)
+
 ##### Video Demo:
 Watch the video demo of the application using the link below:
 https://youtu.be/W0HTFsjB2mA
@@ -26,8 +29,6 @@ https://youtu.be/W0HTFsjB2mA
     g. Follow or Unfollow Users - performed through AJAX calls
  
 
-#### Image:
-![Thumbnail1](https://user-images.githubusercontent.com/61527086/108662451-2d8b2980-74f0-11eb-932b-49dababd2284.PNG)
 
 
 
