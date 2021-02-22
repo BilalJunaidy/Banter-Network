@@ -27,7 +27,7 @@ https://youtu.be/W0HTFsjB2mA
  
 
 #### Image:
-![](/media/site_images/Thumbnail1.PNG, 'Banter Network')
+![image](/media/site_images/Thumbnail1.png, 'Banter Network')
 
 
 
