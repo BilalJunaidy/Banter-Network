@@ -16,7 +16,7 @@ https://youtu.be/W0HTFsjB2mA
     python manage.py migrate
     python manage.py runserver
     ```
-3. Features:
+##### Features:
     ```commandline
     a. Create user, login and logout users
     b. Update User profile by editing the User's name, country, bio, image etc - Performed through AJAX
